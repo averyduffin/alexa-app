@@ -24,6 +24,7 @@ app.use(bodyParser.json({
 
 const requestVerifier = (req, res, next) => {
     console.log('verifing the request')
+    next();
     // alexaVerifier(
     //     req.headers.signaturecertchainurl,
     //     req.headers.signature,
