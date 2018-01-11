@@ -25,18 +25,6 @@ app.use(bodyParser.json({
 const requestVerifier = (req, res, next) => {
     console.log('verifing the request')
     next();
-    // alexaVerifier(
-    //     req.headers.signaturecertchainurl,
-    //     req.headers.signature,
-    //     req.rawBody,
-    //     function verificationCallback(err) {
-    //         if (err) {
-    //             res.status(401).json({ message: 'Verification Failure', error: err });
-    //         } else {
-    //             next();
-    //         }
-    //     }
-    // );
 }
 
 app.get('/alexa', requestVerifier, (req, res) => {
@@ -54,58 +42,17 @@ app.get('/alexa', requestVerifier, (req, res) => {
 })
 
 app.post('/alexa', requestVerifier, (req, res) => {
-    console.log("recieved ", req.body);
+    console.log("recieved ", req.rawBody);
+    let repromptText = '';
+    let sessionAttributes = {};
+    const shouldEndSession = false;
+    let speechOutput = 'This should have worked'; 
     res.json({
-        "version": "1.0",
-        "response": {
-            "shouldEndSession": true,
-            "outputSpeech": {
-                "type": "SSML",
-                "ssml": "<speak>Looks like a great day!</speak>"
-            }
-        }
+        repromptText,
+        sessionAttributes,
+        shouldEndSession,
+        speechOutput 
     });
-    // if (req.body.request.type === 'LaunchRequest') {
-    //     console.log("Launch Request");
-    //     res.json({
-    //         "version": "1.0",
-    //         "response": {
-    //         "shouldEndSession": true,
-    //         "outputSpeech": {
-    //             "type": "SSML",
-    //             "ssml": "<speak>Hmm <break time=\"1s\"/> What day do you want to know about?</speak>"
-    //         }
-    //         }
-    //     });
-    // }
-    // else if (req.body.request.type === 'SessionEndedRequest') {
-    //     // Per the documentation, we do NOT send ANY response... I know, awkward.
-    //     console.log('Session ended', req.body.request.reason);
-    // }
-    // else if (req.body.request.type === 'IntentRequest' &&
-    //     req.body.request.intent.name === 'Forecast') {
-    //     console.log("Forecast");
-    //     if (!req.body.request.intent.slots.Day ||
-    //         !req.body.request.intent.slots.Day.value) {
-    //         // Handle this error by producing a response like:
-    //         // "Hmm, what day do you want to know the forecast for?"
-    //     }
-    //     let day = new Date(req.body.request.intent.slots.Day.value);
-
-    //     // Do your business logic to get weather data here!
-    //     // Then send a JSON response...
-
-    //     res.json({
-    //         "version": "1.0",
-    //         "response": {
-    //             "shouldEndSession": true,
-    //             "outputSpeech": {
-    //                 "type": "SSML",
-    //                 "ssml": "<speak>Looks like a great day!</speak>"
-    //             }
-    //         }
-    //     });
-    // } 
 });
 
 app.get('/api/leads', (req, res) => res.send('THIS WORKED'));

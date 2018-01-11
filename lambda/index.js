@@ -96,10 +96,10 @@ function onLaunch(launchRequest, session, callback) {
  * Called when the user specifies an intent for this skill.
  */
 function onIntent(intentRequest, session, callback) {
-    console.log(`onIntent intentName=${intentRequest.intent.name}`);
-
     const intent = intentRequest.intent;
     const intentName = intentRequest.intent.name;
+
+    console.log("onIntent:  ", intentName);
     
     if (intentName === 'AMAZON.StopIntent' || intentName === 'AMAZON.CancelIntent') {
         handleSessionEndRequest(callback);
@@ -111,17 +111,18 @@ function onIntent(intentRequest, session, callback) {
 
     let repromptText = '';
     let sessionAttributes = {};
-    const shouldEndSession = false;    
+    const shouldEndSession = false;
+    let speechOutput = 'This should have worked'; 
+    
     console.log("we made it here");
     request.post(
         'https://devstormad0.stormautodialer.com/alexa',
         { intent: intent, intentName: intentName },
         function (error, response, body) {
             console.log("WE RECIEVED THE RESPONSE BACK");
-            console.log("RESPONSE", err, body);
+            console.log("RESPONSE", error, body);
             if (!error && response.statusCode == 200) {
-                speechOutput = "This has not been implemented";
-                callback(sessionAttributes, buildSpeechletResponse(intentName, speechOutput, repromptText, shouldEndSession));
+                callback(sessionAttributes, buildSpeechletResponse(intent.name, body.speechOutput, body.repromptText, body.shouldEndSession));
             }
         }
     );
