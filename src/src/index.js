@@ -38,7 +38,9 @@ const requestVerifier = (req, res, next) => {
 }
 
 app.get('/alexa', requestVerifier, (req, res) => {
+    console.log("recieved request");
     if (req.body.request.type === 'LaunchRequest') {
+        console.log("Launch Request");
         res.json({
             "version": "1.0",
             "response": {
@@ -56,7 +58,7 @@ app.get('/alexa', requestVerifier, (req, res) => {
     }
     else if (req.body.request.type === 'IntentRequest' &&
         req.body.request.intent.name === 'Forecast') {
-
+        console.log("Forecast");
         if (!req.body.request.intent.slots.Day ||
             !req.body.request.intent.slots.Day.value) {
             // Handle this error by producing a response like:
