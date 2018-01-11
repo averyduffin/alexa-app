@@ -14,7 +14,11 @@ export const app = express()
 const server = http.createServer(app)
 export const io = socketio(server, {path: '/io'})
 
-app.get('/', (req, res) => res.send('Hello World!'));
+app.get('/alexa', (req, res) => res.send('Hello World!'));
+
+app.get('/api/leads', (req, res) => res.send('THIS WORKED'));
+
+
 // export const broadcast = (room, eventName, data={}) => {
 //     logger.info('[ ' + room + ' ] [ ' + eventName + ' ] ', data);
 //     io.to(room).emit(eventName, data);
