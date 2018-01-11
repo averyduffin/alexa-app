@@ -96,7 +96,7 @@ function onLaunch(launchRequest, session, callback) {
  * Called when the user specifies an intent for this skill.
  */
 function onIntent(intentRequest, session, callback) {
-    console.log(`onIntent requestId=${intentRequest.requestId}, sessionId=${session.sessionId}`);
+    console.log(`onIntent intentName=${intentRequest.intent.name}`);
 
     const intent = intentRequest.intent;
     const intentName = intentRequest.intent.name;
@@ -107,16 +107,18 @@ function onIntent(intentRequest, session, callback) {
     }else if (intentName === 'AMAZON.HelpIntent') {
         getWelcomeResponse(callback);
         return;
-    } 
+    }
 
     let repromptText = '';
     let sessionAttributes = {};
     const shouldEndSession = false;    
-
+    console.log("we made it here");
     request.post(
         'https://devstormad0.stormautodialer.com/alexa',
         { intent: intent, intentName: intentName },
         function (error, response, body) {
+            console.log("WE RECIEVED THE RESPONSE BACK");
+            console.log("RESPONSE", err, body);
             if (!error && response.statusCode == 200) {
                 speechOutput = "This has not been implemented";
                 callback(sessionAttributes, buildSpeechletResponse(intentName, speechOutput, repromptText, shouldEndSession));
