@@ -22,7 +22,11 @@ const requestVerifier = (req, res, next) => {
     console.log('verifing the request')
     next();
 }
-
+/*{ intent:
+   { name: 'MyColorIsIntent',
+     confirmationStatus: 'NONE',
+     slots: { Color: [Object] } },
+  intentName: 'MyColorIsIntent' }*/
 app.get('/alexa', requestVerifier, (req, res) => {
     console.log("REQUEST TO GET WAS JUST MADE");
     res.json({
@@ -38,7 +42,7 @@ app.get('/alexa', requestVerifier, (req, res) => {
 })
 
 app.post('/alexa', requestVerifier, (req, res) => {
-    console.log(req.body);
+    console.log(req.body.intentName);
     let repromptText = '';
     let sessionAttributes = {};
     const shouldEndSession = false;

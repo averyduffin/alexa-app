@@ -51,12 +51,11 @@ function getWelcomeResponse(callback) {
     // If we wanted to initialize the session to have some attributes we could add those here.
     const sessionAttributes = {};
     const cardTitle = 'Welcome';
-    const speechOutput = 'Welcome to the Alexa Skills Kit sample. ' +
-        'Please tell me your favorite color by saying, my favorite color is red';
+    const speechOutput = 'Welcome to the red x personal assistant. ' +
+        'What would you like to do? For example, say, How many new leads do I have today?';
     // If the user either does not reply to the welcome message or says something that is not
     // understood, they will be prompted again with this text.
-    const repromptText = 'Please tell me your favorite color by saying, ' +
-        'my favorite color is red';
+    const repromptText = 'Please say something like, How many new leads do I have today?'
     const shouldEndSession = false;
 
     callback(sessionAttributes,
@@ -65,7 +64,7 @@ function getWelcomeResponse(callback) {
 
 function handleSessionEndRequest(callback) {
     const cardTitle = 'Session Ended';
-    const speechOutput = 'Thank you for trying the Alexa Skills Kit sample. Have a nice day!';
+    const speechOutput = 'Thank you for using the red x personal assistant. Have a nice day!';
     // Setting this to true ends the session and exits the skill.
     const shouldEndSession = true;
 
@@ -115,17 +114,23 @@ function onIntent(intentRequest, session, callback) {
     let speechOutput = 'This should have worked'; 
     
     console.log("we made it here");
-    request.post(
-        'https://devstormad0.stormautodialer.com/alexa',
-        { intent: intent, intentName: intentName },
-        function (error, response, body) {
-            console.log("WE RECIEVED THE RESPONSE BACK");
-            console.log("RESPONSE", error, body);
-            if (!error && response.statusCode == 200) {
-                callback(sessionAttributes, buildSpeechletResponse(intent.name, body.speechOutput, body.repromptText, body.shouldEndSession));
-            }
+
+    var options = {
+        uri: 'https://devstormad0.stormautodialer.com/alexa',
+        method: 'POST',
+        json: { 
+            "intent": intent, 
+            "IntentValues": intent.slots
         }
-    );
+      };
+
+    request(options, function (error, response, body) {
+        console.log("WE RECIEVED THE RESPONSE BACK");
+        console.log("RESPONSE", error, body);
+        if (!error && response.statusCode == 200) {
+            callback(sessionAttributes, buildSpeechletResponse(intent.name, body.speechOutput, body.repromptText, body.shouldEndSession));
+        }
+    });
 
 }
 
