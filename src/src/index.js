@@ -45,14 +45,24 @@ app.post('/alexa', requestVerifier, (req, res) => {
     console.log(req.body);
     let repromptText = '';
     let sessionAttributes = {};
-    const shouldEndSession = false;
-    let speechOutput = 'This should have worked'; 
+    let shouldEndSession = false;
+    let speechOutput = 'The Red x personal assistant currently isnt working.'; 
+    
+    switch (req.body.intent.name){
+        case "VortexStats":
+            console.log("Getting storm stats")
+            break;
+        default:
+            shouldEndSession = true;
+            break;
+    }
+
     res.json({
         repromptText,
         sessionAttributes,
         shouldEndSession,
         speechOutput 
-    });
+    })
 });
 
 app.get('/api/leads', (req, res) => res.send('THIS WORKED'));
