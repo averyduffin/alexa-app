@@ -38,7 +38,7 @@ app.get('/alexa', requestVerifier, (req, res) => {
 })
 
 app.post('/alexa', requestVerifier, (req, res) => {
-    console.log("recieved ", req);
+    console.log(req.body);
     let repromptText = '';
     let sessionAttributes = {};
     const shouldEndSession = false;
