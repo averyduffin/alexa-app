@@ -16,11 +16,7 @@ export const app = express()
 const server = http.createServer(app)
 export const io = socketio(server, {path: '/io'})
 
-app.use(bodyParser.json({
-    verify: function getRawBody(req, res, buf) {
-        req.rawBody = buf.toString();
-    }
-}));
+app.use(bodyParser.json());
 
 const requestVerifier = (req, res, next) => {
     console.log('verifing the request')
