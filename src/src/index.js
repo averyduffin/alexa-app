@@ -1,6 +1,8 @@
 import express from 'express'
 import http from 'http'
 import socketio from 'socket.io'
+import bodyParser from 'body-parser'
+import alexaVerifier from 'alexa-verifier'
 import { vortex } from './routes'
 // import jwt from 'jsonwebtoken'
 // import { connectFreeswitch } from './freeswitch'
@@ -14,47 +16,73 @@ export const app = express()
 const server = http.createServer(app)
 export const io = socketio(server, {path: '/io'})
 
-app.get('/alexa', (req, res) => res.send('Hello World!'));
+app.use(bodyParser.json({
+    verify: function getRawBody(req, res, buf) {
+        req.rawBody = buf.toString();
+    }
+}));
+
+const requestVerifier = (req, res, next) => {
+    alexaVerifier(
+        req.headers.signaturecertchainurl,
+        req.headers.signature,
+        req.rawBody,
+        function verificationCallback(err) {
+            if (err) {
+                res.status(401).json({ message: 'Verification Failure', error: err });
+            } else {
+                next();
+            }
+        }
+    );
+}
+
+app.get('/alexa', requestVerifier, (req, res) => {
+    if (req.body.request.type === 'LaunchRequest') {
+        res.json({
+            "version": "1.0",
+            "response": {
+            "shouldEndSession": true,
+            "outputSpeech": {
+                "type": "SSML",
+                "ssml": "<speak>Hmm <break time=\"1s\"/> What day do you want to know about?</speak>"
+            }
+            }
+        });
+    }
+    else if (req.body.request.type === 'SessionEndedRequest') {
+        // Per the documentation, we do NOT send ANY response... I know, awkward.
+        console.log('Session ended', req.body.request.reason);
+    }
+    else if (req.body.request.type === 'IntentRequest' &&
+        req.body.request.intent.name === 'Forecast') {
+
+        if (!req.body.request.intent.slots.Day ||
+            !req.body.request.intent.slots.Day.value) {
+            // Handle this error by producing a response like:
+            // "Hmm, what day do you want to know the forecast for?"
+        }
+        let day = new Date(req.body.request.intent.slots.Day.value);
+
+        // Do your business logic to get weather data here!
+        // Then send a JSON response...
+
+        res.json({
+            "version": "1.0",
+            "response": {
+                "shouldEndSession": true,
+                "outputSpeech": {
+                    "type": "SSML",
+                    "ssml": "<speak>Looks like a great day!</speak>"
+                }
+            }
+        });
+    } 
+});
 
 app.get('/api/leads', (req, res) => res.send('THIS WORKED'));
 
 
-// export const broadcast = (room, eventName, data={}) => {
-//     logger.info('[ ' + room + ' ] [ ' + eventName + ' ] ', data);
-//     io.to(room).emit(eventName, data);
-// }
-
-
-// io.on('connection', (socket) => {
-
-//     socket.on('disconnect', () => {
-//         if (socket.user_id) {
-//             logger.debug(socket.user_id + ' disconnected');
-//             userEvent(socket.user_id, 'disconnected');
-//         }
-//     })
-
-//     socket.on('subscribe', (data) => {
-//         // note: we ignore expiration because the jwt has a tight window and we still want the socket to connect
-//         jwt.verify(data.token, getConfigValue('jwt-secret'), { ignoreExpiration: true }, (err, payload) => {
-//             if (err) {
-//                 logger.error('JWT verification failed', err);
-//             } else {
-//                 socket.user_id = payload.user_id;
-//                 socket.join('users');
-//                 socket.join('U_' + socket.user_id);
-//                 socket.join('FS_' + socket.user_id);
-//                 socket.emit('useSocketIO', true);
-//                 logger.info(socket.user_id + ' subscribed');
-//                 userEvent(socket.user_id, 'connected');
-//             }
-//         })
-//     })
-
-// })
-
-
 server.listen(PORT, () => {
     console.log('Node server listening on port ' + PORT);
-    //connectFreeswitch();
 });
