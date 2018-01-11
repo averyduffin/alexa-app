@@ -39,6 +39,20 @@ const requestVerifier = (req, res, next) => {
     // );
 }
 
+app.get('/alexa', requestVerifier, (req, res) => {
+    console.log("REQUEST TO GET WAS JUST MADE");
+    res.json({
+        "version": "1.0",
+        "response": {
+            "shouldEndSession": true,
+            "outputSpeech": {
+                "type": "SSML",
+                "ssml": "<speak>Looks like a great day!</speak>"
+            }
+        }
+    });
+})
+
 app.post('/alexa', requestVerifier, (req, res) => {
     console.log("recieved request");
     if (req.body.request.type === 'LaunchRequest') {
