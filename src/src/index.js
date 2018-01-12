@@ -3,7 +3,7 @@ import http from 'http'
 import socketio from 'socket.io'
 import bodyParser from 'body-parser'
 import alexaVerifier from 'alexa-verifier'
-import { getVortexToken } from './vortex_client'
+import { getVortexToken, getNumberOfNewLeads } from './vortex_client'
 
 // import { connectFreeswitch } from './freeswitch'
 import { ENV, PORT, JWT_SECRET } from './constants'
@@ -52,7 +52,7 @@ app.post('/alexa', requestVerifier, (req, res) => {
         case "VortexStats":
             console.log("Getting storm stats")
             getNumberOfNewLeads((newLeadsCount) => {
-                speechOutput = "You total new lead count is " + newLeadsCount; 
+                speechOutput = "Your total new lead count is " + newLeadsCount; 
                 sendResponse(repromptText, sessionAttributes, shouldEndSession, speechOutput);
             }); 
             break;
