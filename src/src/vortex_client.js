@@ -48,6 +48,16 @@ export const getLeadStats = (callback) => {
     });
 }
 
-export const getNumberOfCallbacks = ()=> {
+export const getCallbacks = (callback)=> {
+    var options = {
+        uri: VORTEX_URL + "/users/" + userId + "/tasks?access_token=" + jwtToken,
+        method: 'POST',
+        json: {}
+      };
+
+    Request(options, function (error, response, body) {
+        console.log(body);
+        callback(body);
+    });
 
 }
