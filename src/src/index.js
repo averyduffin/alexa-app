@@ -57,14 +57,14 @@ app.post('/alexa', requestVerifier, (req, res) => {
             }); 
             break;
         case "VortexStats":
-            console.log("Getting storm stats")
+            console.log("Stats")
             getLeadStats((stats) => {
                 speechOutput = "Your lead stats are as follows: new leads, " + stats.New + ", Contacted, " + stats.Contacted + ", In Progress, " + stats.InProgress + ", callbacks, " + stats.Callback + ", Previously sold, " + stats.PrevSold + ", Relisted, " + stats.Relisted + ", Not interested, " + stats.NotInterested; 
                 sendResponse(res, repromptText, sessionAttributes, shouldEndSession, speechOutput);
             }); 
             break;
         case "VortexCallbacks":
-            console.log("Getting storm stats")
+            console.log("Callbacks")
             getCallbacks((tasks) => {
                 speechOutput = "Your total scheduled callbacks for today are, " + tasks.tasks.length + ", Your first callback is scheduled for 3 o'clock today, the name is, " + tasks.tasks[0].title + ", would you like to call them now with the storm dialer? Or Here the next one?"; 
                 sendResponse(res, repromptText, sessionAttributes, shouldEndSession, speechOutput);
