@@ -66,7 +66,7 @@ app.post('/alexa', requestVerifier, (req, res) => {
         case "VortexCallbacks":
             console.log("Callbacks")
             getCallbacks((tasks) => {
-                speechOutput = "Your total scheduled callbacks for today are, " + tasks.tasks.length + ", Your first callback is scheduled for 3 o'clock today, the name is, " + tasks.tasks[0].title + ", would you like to call them now with the storm dialer? Or Here the next one?"; 
+                speechOutput = "Your total scheduled callbacks for today are, " + tasks.tasks.length + ", Your first callback is scheduled for 3 o'clock today, the name is, " + tasks.tasks[0].title + ", would you like to call them now with the storm dialer? Or hear the next one?"; 
                 sendResponse(res, repromptText, sessionAttributes, shouldEndSession, speechOutput);
             }); 
             break;
