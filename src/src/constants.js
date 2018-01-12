@@ -17,3 +17,7 @@ export const FS_SUBSCRIPTIONS = [
         'STORM::call_status',
         'STORM::message_status'
 ];
+
+export const VORTEX_URL = 'https://vortex.theredx.com/api';
+export const VORTEX_USERNAME = 'aduffin';
+export const VORTEX_PASSWORD = '!help!';
