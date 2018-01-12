@@ -53,19 +53,19 @@ app.post('/alexa', requestVerifier, (req, res) => {
             console.log("Getting storm stats")
             getNumberOfNewLeads((newLeadsCount) => {
                 speechOutput = "Your total new lead count is " + newLeadsCount; 
-                sendResponse(repromptText, sessionAttributes, shouldEndSession, speechOutput);
+                sendResponse(res, repromptText, sessionAttributes, shouldEndSession, speechOutput);
             }); 
             break;
         default:
             shouldEndSession = true;
             speechOutput += " Exiting the red x personal assitant"
-            sendResponse(repromptText, sessionAttributes, shouldEndSession, speechOutput);
+            sendResponse(res, repromptText, sessionAttributes, shouldEndSession, speechOutput);
             break;
     }
 });
 
 
-const sendResponse = (repromptText, sessionAttributes, shouldEndSession, speechOutput) => {
+const sendResponse = (res, repromptText, sessionAttributes, shouldEndSession, speechOutput) => {
     res.json({
         repromptText,
         sessionAttributes,
