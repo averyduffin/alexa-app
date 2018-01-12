@@ -59,7 +59,7 @@ app.post('/alexa', requestVerifier, (req, res) => {
         case "VortexStats":
             console.log("Getting storm stats")
             getLeadStats((stats) => {
-                speechOutput = "Your lead stats are as follows: new leads, " + stats.New + ", Contacted " + stats.Contacted + " In Progress " + stats.InProgress + " callbacks " + stats.Callback + " Previously sold " + stats.PrevSold + " Relisted " + stats.Relisted + " Not interested " + stats.NotInterested; 
+                speechOutput = "Your lead stats are as follows: new leads, " + stats.New + ", Contacted, " + stats.Contacted + ", In Progress, " + stats.InProgress + ", callbacks, " + stats.Callback + ", Previously sold, " + stats.PrevSold + ", Relisted, " + stats.Relisted + ", Not interested, " + stats.NotInterested; 
                 sendResponse(res, repromptText, sessionAttributes, shouldEndSession, speechOutput);
             }); 
             break;
