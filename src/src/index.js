@@ -66,7 +66,7 @@ app.post('/alexa', requestVerifier, (req, res) => {
         case "VortexCallbacks":
             console.log("Getting storm stats")
             getCallbacks((tasks) => {
-                speechOutput = "Your total scheduled callbacks for today are, " + tasks.tasks.length + ", Your first callback is scheduled for 3 o'clock today, the name is, " + tasks.tasks[0].title ", would you like to call them now with the storm dialer? Or Here the next one?"; 
+                speechOutput = "Your total scheduled callbacks for today are, " + tasks.tasks.length + ", Your first callback is scheduled for 3 o'clock today, the name is, " + tasks.tasks[0].title + ", would you like to call them now with the storm dialer? Or Here the next one?"; 
                 sendResponse(res, repromptText, sessionAttributes, shouldEndSession, speechOutput);
             }); 
             break;
@@ -94,8 +94,8 @@ app.get('/api/leads', (req, res) => res.send('THIS WORKED'));
 server.listen(PORT, () => {
     console.log('Node server listening on port ' + PORT);
     getVortexToken(()=>{
-        // getNumberOfNewLeads((newLeadsCount) => {
-        //     console.log(newLeadsCount);
+        // getCallbacks((tasks) => {
+        //     console.log(tasks.tasks[0].title);
         // }); 
     });
 });

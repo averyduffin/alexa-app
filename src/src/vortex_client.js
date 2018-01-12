@@ -51,13 +51,12 @@ export const getLeadStats = (callback) => {
 export const getCallbacks = (callback)=> {
     var options = {
         uri: VORTEX_URL + "/users/" + userId + "/tasks?access_token=" + jwtToken,
-        method: 'POST',
-        json: {}
+        method: 'GET'
       };
 
     Request(options, function (error, response, body) {
-        console.log(body);
-        callback(body);
+        let task = JSON.parse(body);
+        callback(task);
     });
 
 }
