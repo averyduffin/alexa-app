@@ -35,6 +35,19 @@ export const getNumberOfNewLeads = (callback) => {
     });
 }
 
+export const getLeadStats = (callback) => {
+    var options = {
+        uri: VORTEX_URL + "/users/" + userId + "/leads/search?access_token=" + jwtToken,
+        method: 'POST',
+        json: {}
+      };
+
+    Request(options, function (error, response, body) {
+        console.log(body.counts.funnel);
+        callback(body.counts.funnel);
+    });
+}
+
 export const getNumberOfCallbacks = ()=> {
 
 }

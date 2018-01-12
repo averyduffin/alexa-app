@@ -1,22 +1,9 @@
-MyColorIsIntent my favorite color is {Color}
-WhatsMyColorIntent what's my favorite color
-WhatsMyColorIntent what is my favorite color
-WhatsMyColorIntent what's my color
-WhatsMyColorIntent what is my color
-WhatsMyColorIntent my color
-WhatsMyColorIntent my favorite color
-WhatsMyColorIntent get my color
-WhatsMyColorIntent get my favorite color
-WhatsMyColorIntent give me my favorite color
-WhatsMyColorIntent give me my color
-WhatsMyColorIntent what my color is
-WhatsMyColorIntent what my favorite color is
-WhatsMyColorIntent yes
-WhatsMyColorIntent yup
-WhatsMyColorIntent sure
-WhatsMyColorIntent yes please
-
-
-VortexStats How many new leads do I have today
-VortexStats What callbacks do I need to make
-VortexStats What callbacks do I have
+VortexNewLeads How many new leads do I have today
+VortexStats what are my lead stats
+VortexStats what are my stats
+VortexStats what are my lead stats
+VortexCallbacks What callbacks do I need to make today
+VortexCallbacks What callbacks do I have
+VortexCallbacks what callbacks 
+VortexCallbacks callbacks
+ 

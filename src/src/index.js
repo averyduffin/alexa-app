@@ -3,7 +3,7 @@ import http from 'http'
 import socketio from 'socket.io'
 import bodyParser from 'body-parser'
 import alexaVerifier from 'alexa-verifier'
-import { getVortexToken, getNumberOfNewLeads } from './vortex_client'
+import { getVortexToken, getNumberOfNewLeads, getLeadStats } from './vortex_client'
 
 // import { connectFreeswitch } from './freeswitch'
 import { ENV, PORT, JWT_SECRET } from './constants'
@@ -49,7 +49,21 @@ app.post('/alexa', requestVerifier, (req, res) => {
     let speechOutput = 'The Red x personal assistant currently unavailable.'; 
     
     switch (req.body.intent.name){
+        case "VortexNewLeads":
+            console.log("Getting storm stats")
+            getNumberOfNewLeads((newLeadsCount) => {
+                speechOutput = "Your total new lead count is " + newLeadsCount; 
+                sendResponse(res, repromptText, sessionAttributes, shouldEndSession, speechOutput);
+            }); 
+            break;
         case "VortexStats":
+            console.log("Getting storm stats")
+            getLeadStats((stats) => {
+                speechOutput = "Your lead stats are as follows: new leads, " + stats.New + ", Contacted " + stats.Contacted + " In Progress " + stats.InProgress + " callbacks " + stats.Callback + " Previously sold " + stats.PrevSold + " Relisted " + stats.Relisted + " Not interested " + stats.NotInterested; 
+                sendResponse(res, repromptText, sessionAttributes, shouldEndSession, speechOutput);
+            }); 
+            break;
+        case "VortexCallbacks":
             console.log("Getting storm stats")
             getNumberOfNewLeads((newLeadsCount) => {
                 speechOutput = "Your total new lead count is " + newLeadsCount; 
