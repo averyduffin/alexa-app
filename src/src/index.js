@@ -46,7 +46,7 @@ app.post('/alexa', requestVerifier, (req, res) => {
     let repromptText = '';
     let sessionAttributes = {};
     let shouldEndSession = false;
-    let speechOutput = 'The Red x personal assistant currently unavailable working.'; 
+    let speechOutput = 'The Red x personal assistant currently unavailable.'; 
     
     switch (req.body.intent.name){
         case "VortexStats":
@@ -79,5 +79,9 @@ app.get('/api/leads', (req, res) => res.send('THIS WORKED'));
 
 server.listen(PORT, () => {
     console.log('Node server listening on port ' + PORT);
-    getVortexToken();
+    getVortexToken(()=>{
+        // getNumberOfNewLeads((newLeadsCount) => {
+        //     console.log(newLeadsCount);
+        // }); 
+    });
 });

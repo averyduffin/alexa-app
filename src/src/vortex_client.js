@@ -4,7 +4,7 @@ import { VORTEX_URL, VORTEX_USERNAME, VORTEX_PASSWORD } from './constants'
 let jwtToken = '';
 let userId = '';
 
-export const getVortexToken = () => {
+export const getVortexToken = (callback) => {
     var options = {
         uri: VORTEX_URL + "/login",
         method: 'POST',
@@ -18,6 +18,7 @@ export const getVortexToken = () => {
         console.log(body.token);
         jwtToken = body.token;
         userId = body.id;
+        callback();
     }); 
 }
 
